@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Servicio;
+use App\Models\Producto;
+use App\Models\Categoria;
+use App\Models\Cliente;
 use App\Models\ProductosServicio;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductosServicioController extends Controller
 {
@@ -14,7 +19,10 @@ class ProductosServicioController extends Controller
      */
     public function index()
     {
-        //
+        $productos = Producto::all();
+        $categorias = Categoria::all();
+        $clientes = Cliente::all();
+        return view('proservicio.index',compact('productos','categorias','clientes'));
     }
 
     /**
@@ -35,7 +43,22 @@ class ProductosServicioController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try{
+            DB::beginTransaction();
+            $servicio = Servicio::create($request->all());
+            foreach ($request->producto_id as $key => $value){
+                $servicio->productos()->attach($value,['cantidad'=>$request['cantidades'][$key]]);
+                $producto = Producto::find($value);
+                $producto->stock = $producto->stock - $request['cantidades'][$key];
+                $producto->save();
+            }
+            DB::commit();
+            return $request;
+        }catch(\Exception $e){
+            DB::rollBack();
+            echo $e->getMessage();
+            echo "<br><h1>Error!!</h1>";
+        }
     }
 
     /**
@@ -46,7 +69,8 @@ class ProductosServicioController extends Controller
      */
     public function show(ProductosServicio $productosServicio)
     {
-        //
+        $servicios = Servicio::paginate(1);
+        return view('proservicio.show',compact('servicios'));
     }
 
     /**

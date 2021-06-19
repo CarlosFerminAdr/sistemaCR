@@ -15,20 +15,6 @@ class CreateProductosServiciosTable extends Migration
     {
         Schema::create('productos_servicios', function (Blueprint $table) {
             $table->id();
-            $table->integer('cantidad');
-            $table->unsignedBigInteger('producto_id');
-            $table->foreign('producto_id')
-                    ->references('id')
-                    ->on('productos')
-                    ->onDelete('restrict')
-                    ->onUpdate('cascade');
-                    $table->string('precio');
-            $table->unsignedBigInteger('servicio_id');
-            $table->foreign('servicio_id')
-                    ->references('id')
-                    ->on('servicios')
-                    ->onDelete('restrict')
-                    ->onUpdate('cascade');
             $table->timestamps();
         });
     }

@@ -10,4 +10,8 @@ class Producto extends Model
     use HasFactory;
 
     protected $guarded =[];
+
+    public function servicios(){
+        return $this->belongsToMany(Servicio::class);
+    }
 }

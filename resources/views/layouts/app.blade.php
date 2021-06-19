@@ -43,6 +43,9 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('productos.index') }}">{{ __('Productos') }}</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('proservicio.index') }}">{{ __('Servicios') }}</a>
+                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -88,5 +91,7 @@
             @yield('content')
         </main>
     </div>
+
+    @yield('Scripts')
 </body>
 </html>
